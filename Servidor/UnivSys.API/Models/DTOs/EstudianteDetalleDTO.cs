@@ -1,0 +1,25 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace UnivSys.API.Models.DTOs
+{
+    public class EstudianteDetalleDTO
+    {
+        public string IDEstudiante { get; set; }
+        public string NombreCompleto { get; set; } 
+        public int Semestre { get; set; }
+        
+        // Información de Carrera
+        public int CarreraID { get; set; }
+        public string NombreCarrera { get; set; } 
+
+        // Información de Tipo de Estudiante
+        public string TipoEstudiante { get; set; } // "Regular", "Becado", o "Egresado"
+        
+        // Detalle de Condición
+        public int? PorcentajeBeca { get; set; } 
+        public DateTime? FechaEgreso { get; set; }
+        
+        // Podríamos agregar el Promedio aquí en una fase posterior.
+        public decimal? Promedio { get; set; }
+    }
+}
