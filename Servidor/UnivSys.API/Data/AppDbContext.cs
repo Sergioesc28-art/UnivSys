@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UnivSys.API.Models;
 
-
 namespace UnivSys.API.Data
 {
     public class AppDbContext : DbContext
@@ -22,25 +21,34 @@ namespace UnivSys.API.Data
         // Configuración de Mapeos (Claves, relaciones 1:1)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             // Configuración específica de las relaciones 1:1 que diseñaste:
-             
-             // EstudiantesBecados (IDEstudiante como PK y FK)
-             modelBuilder.Entity<EstudianteBecado>()
-                .HasKey(b => b.IDEstudiante); 
-             modelBuilder.Entity<EstudianteBecado>()
-                .HasOne<Estudiante>() 
-                .WithOne()
-                .HasForeignKey<EstudianteBecado>(b => b.IDEstudiante);
-                
-             // EstudiantesEgresados (IDEstudiante como PK y FK)
-             modelBuilder.Entity<EstudianteEgresado>()
-                .HasKey(e => e.IDEstudiante);
-             modelBuilder.Entity<EstudianteEgresado>()
-                .HasOne<Estudiante>()
-                .WithOne()
-                .HasForeignKey<EstudianteEgresado>(e => e.IDEstudiante);
-                
+            // Llama a la implementación base
             base.OnModelCreating(modelBuilder);
+            
+            // ===================================================================
+            // CORRECCIÓN CLAVE: Configuración Explícita de Relaciones Uno a Uno (1:1)
+            // Esto resuelve el error "The dependent side could not be determined..."
+            // ===================================================================
+
+            // 1. Relación UNO A UNO: Estudiante <--> EstudianteBecado
+            modelBuilder.Entity<Estudiante>()
+                .HasOne(e => e.DetalleBecado)   // Estudiante tiene una propiedad de navegación DetalleBecado
+                .WithOne(b => b.Estudiante)     // DetalleBecado tiene una propiedad de navegación Estudiante
+                .HasForeignKey<EstudianteBecado>(b => b.IDEstudiante) // La FK (y PK) está en EstudianteBecado y apunta a Estudiante.IDEstudiante
+                .IsRequired(false); // La relación no es obligatoria (un estudiante puede no ser becado)
+
+            // 2. Relación UNO A UNO: Estudiante <--> EstudianteEgresado
+            modelBuilder.Entity<Estudiante>()
+                .HasOne(e => e.DetalleEgresado) // Estudiante tiene una propiedad de navegación DetalleEgresado
+                .WithOne(g => g.Estudiante)     // DetalleEgresado tiene una propiedad de navegación Estudiante
+                .HasForeignKey<EstudianteEgresado>(g => g.IDEstudiante) // La FK (y PK) está en EstudianteEgresado y apunta a Estudiante.IDEstudiante
+                .IsRequired(false); // La relación no es obligatoria (un estudiante puede no ser egresado)
+
+            // 3. Relación UNO A MUCHOS: Carrera <--> Estudiante
+            modelBuilder.Entity<Estudiante>()
+                .HasOne(e => e.Carrera) // Estudiante tiene una Carrera
+                .WithMany() // (Asumimos que la entidad Carrera no necesita una lista de Estudiantes, si la necesita se usaría .WithMany(c => c.Estudiantes))
+                .HasForeignKey(e => e.CarreraID)
+                .IsRequired(); // Un estudiante debe tener una carrera
         }
     }
 }
