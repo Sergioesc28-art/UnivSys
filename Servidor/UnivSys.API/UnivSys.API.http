@@ -1,0 +1,6 @@
+@UnivSys.API_HostAddress = http://localhost:5055
+
+GET {{UnivSys.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
