@@ -17,6 +17,8 @@ namespace UnivSys.API.Data
         public DbSet<HistorialAcademico> HistorialAcademico { get; set; }
         public DbSet<EstudianteBecado> EstudiantesBecados { get; set; }
         public DbSet<EstudianteEgresado> EstudiantesEgresados { get; set; }
+        public DbSet<Rol> Roles { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         // Configuración de Mapeos (Claves, relaciones 1:1)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,6 +51,12 @@ namespace UnivSys.API.Data
                 .WithMany() // (Asumimos que la entidad Carrera no necesita una lista de Estudiantes, si la necesita se usaría .WithMany(c => c.Estudiantes))
                 .HasForeignKey(e => e.CarreraID)
                 .IsRequired(); // Un estudiante debe tener una carrera
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Rol) // Usuario tiene un Rol
+                .WithMany() // (Asumimos que la entidad Rol no necesita una lista de Usuarios, si la necesita se usaría .WithMany(r => r.Usuarios))
+                .HasForeignKey(u => u.IDRol)
+                .IsRequired(); // Un usuario debe tener un rol
         }
     }
 }

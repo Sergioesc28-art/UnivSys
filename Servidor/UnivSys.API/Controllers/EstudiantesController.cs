@@ -1,53 +1,62 @@
 using Microsoft.AspNetCore.Mvc;
 using UnivSys.API.Models.DTOs;
 using UnivSys.API.Services;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization; // ¡Importante!
 
 namespace UnivSys.API.Controllers
 {
-    // RUTA BASE: /api/estudiantes
     [Route("api/[controller]")]
     [ApiController]
+    //
+    // ¡AQUÍ ESTÁ LA SEGURIDAD!
+    // Protege toda la clase. Solo permite el acceso si el token JWT
+    // contiene UNO de estos tres roles: "Maestro", "Director" O "Admin".
+    //
+    [Authorize(Roles = "Maestro,Director,Admin")]
     public class EstudiantesController : ControllerBase
     {
         private readonly EstudianteService _estudianteService;
 
-        // Inyección del servicio
         public EstudiantesController(EstudianteService estudianteService)
         {
             _estudianteService = estudianteService;
         }
 
-     
+        // =======================================================================
+        // 1. POST: Registrar Estudiante
+        // (Hereda la autorización de la clase)
+        // =======================================================================
+        [HttpPost] 
+        // Si quisieras ser MÁS específico, podrías añadir:
+        // [Authorize(Roles = "Admin,Director")]
         public async Task<IActionResult> RegistrarEstudiante([FromBody] EstudianteRegistroDTO dto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // 400 Bad Request por DataAnnotations
+                return BadRequest(ModelState); 
             }
 
             var (estudianteDetalle, errores) = await _estudianteService.RegistrarEstudianteAsync(dto);
 
             if (errores.Any())
             {
-                // 400 Bad Request por Errores de Negocio (Duplicidad, Factory Method)
                 return BadRequest(new { ErroresDeNegocio = errores });
             }
 
-            // 201 Created: Devuelve la ubicación del nuevo recurso
             return CreatedAtAction(nameof(RegistrarEstudiante), new { id = estudianteDetalle!.IDEstudiante }, estudianteDetalle);
         }
 
-        
+        // =======================================================================
+        // 2A. GET: Consulta Masiva y Filtrado
+        // (Hereda la autorización de la clase)
+        // =======================================================================
         [HttpGet]
-        // [Authorize] 
         public async Task<IActionResult> GetEstudiantes(
             [FromQuery] int? carreraId, 
             [FromQuery] int? semestre)
         {
             var errores = new List<string>();
             
-            // Validación de filtros: Semestre
             if (semestre.HasValue && (semestre.Value < 1 || semestre.Value > 15))
             {
                 errores.Add("El valor de 'semestre' debe estar entre 1 y 15.");
@@ -55,36 +64,37 @@ namespace UnivSys.API.Controllers
             
             if (errores.Any())
             {
-                return BadRequest(new { ErroresDeFiltro = errores }); // 400 Bad Request
+                return BadRequest(new { ErroresDeFiltro = errores }); 
             }
 
             var listaEstudiantes = await _estudianteService.GetEstudiantesFiltradosAsync(carreraId, semestre);
-
-            // 200 OK: Devuelve la lista, aunque esté vacía
             return Ok(listaEstudiantes);
         }
 
-
+        // =======================================================================
+        // 2B. GET: Consulta Individual por ID
+        // (Hereda la autorización de la clase)
+        // =======================================================================
         [HttpGet("{idEstudiante}")]
-        // [Authorize] 
         public async Task<IActionResult> GetEstudiante(string idEstudiante)
         {
             var estudianteDetalle = await _estudianteService.GetEstudianteByIdAsync(idEstudiante);
 
             if (estudianteDetalle == null)
             {
-                return NotFound(new { Mensaje = $"Estudiante con ID '{idEstudiante}' no encontrado." }); // 404 Not Found
+                return NotFound(new { Mensaje = $"Estudiante con ID '{idEstudiante}' no encontrado." }); 
             }
 
-            return Ok(estudianteDetalle); // 200 OK
+            return Ok(estudianteDetalle); 
         }
 
-    
+        // =======================================================================
+        // 3. PUT: Modificar Estudiante
+        // (Hereda la autorización de la clase)
+        // =======================================================================
         [HttpPut("{idEstudiante}")]
-        // [Authorize] 
         public async Task<IActionResult> ActualizarEstudiante(string idEstudiante, [FromBody] EstudianteRegistroDTO dto)
         {
-            // Validar que el ID del DTO coincida con el ID de la ruta
             if (idEstudiante != dto.IDEstudiante)
             {
                 return BadRequest(new { Error = "El ID del estudiante en la ruta no coincide con el ID en el cuerpo de la petición." });
@@ -95,36 +105,37 @@ namespace UnivSys.API.Controllers
                 return BadRequest(ModelState);
             }
             
-            // Este método debe ser implementado en el servicio a continuación
             var (estudianteDetalle, errores, encontrado) = await _estudianteService.ActualizarEstudianteAsync(idEstudiante, dto);
 
             if (!encontrado)
             {
-                return NotFound(new { Mensaje = $"Estudiante con ID '{idEstudiante}' no encontrado para actualizar." }); // 404 Not Found
+                return NotFound(new { Mensaje = $"Estudiante con ID '{idEstudiante}' no encontrado para actualizar." }); 
             }
             
             if (errores.Any())
             {
-                return BadRequest(new { ErroresDeNegocio = errores }); // 400 Bad Request
+                return BadRequest(new { ErroresDeNegocio = errores }); 
             }
             
-            return Ok(estudianteDetalle); // 200 OK
+            return Ok(estudianteDetalle); 
         }
         
-      
+        // =======================================================================
+        // 4. DELETE: Eliminar Estudiante
+        // (Hereda la autorización de la clase, pero la RESTRINGIMOS MÁS)
+        // =======================================================================
         [HttpDelete("{idEstudiante}")]
-        // [Authorize] 
+        [Authorize(Roles = "Director,Admin")] // Solo Director o Admin pueden borrar
         public async Task<IActionResult> EliminarEstudiante(string idEstudiante)
         {
-            // Este método debe ser implementado en el servicio a continuación
             var eliminado = await _estudianteService.EliminarEstudianteAsync(idEstudiante);
 
             if (!eliminado)
             {
-                return NotFound(new { Mensaje = $"Estudiante con ID '{idEstudiante}' no encontrado para eliminar." }); // 404 Not Found
+                return NotFound(new { Mensaje = $"Estudiante con ID '{idEstudiante}' no encontrado para eliminar." }); 
             }
             
-            return NoContent(); // 204 No Content (Éxito sin contenido de respuesta)
+            return NoContent(); 
         }
     }
 }
