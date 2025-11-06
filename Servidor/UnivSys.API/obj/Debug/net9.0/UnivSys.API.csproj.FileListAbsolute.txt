@@ -326,3 +326,5 @@ D:\Arquitectura\UnivSys\Servidor\UnivSys.API\obj\Debug\net9.0\staticwebassets.bu
 D:\Arquitectura\UnivSys\Servidor\UnivSys.API\obj\Debug\net9.0\UnivSys..C0B1AF23.Up2Date
 D:\Arquitectura\UnivSys\Servidor\UnivSys.API\obj\Debug\net9.0\UnivSys.API.genruntimeconfig.cache
 D:\Arquitectura\UnivSys\Servidor\UnivSys.API\obj\Debug\net9.0\ref\UnivSys.API.dll
+D:\Arquitectura\UnivSys\Servidor\UnivSys.API\bin\Debug\net9.0\BCrypt.Net-Next.dll
+D:\Arquitectura\UnivSys\Servidor\UnivSys.API\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

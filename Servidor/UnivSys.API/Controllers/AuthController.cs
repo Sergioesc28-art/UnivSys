@@ -105,7 +105,7 @@ namespace UnivSys.API.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.IDUsuario.ToString()),
                 new Claim(ClaimTypes.Name, usuario.Username),
-                new Claim(ClaimTypes.Role, usuario.Rol.NombreRol) // ¡Aquí incluimos el ROL!
+                new Claim(ClaimTypes.Role, usuario.Rol.NombreRol)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
@@ -113,10 +113,13 @@ namespace UnivSys.API.Controllers
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
+            var now = DateTime.UtcNow;
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddHours(2), // Token válido por 2 horas
+                Expires = DateTime.Now.AddHours(2),
+                NotBefore = now,
                 SigningCredentials = creds
             };
 

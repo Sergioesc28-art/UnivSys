@@ -1,0 +1,54 @@
+<div *ngIf="estudiante$ | async as est; else loading">
+  
+  <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-4">
+        {{ est.nombres }} {{ est.apellidoPaterno }}
+        <span *ngIf="est.esBecado" class="px-3 py-1 text-sm font-medium rounded-full bg-blue-100 text-blue-800">Becado</span>
+        <span *ngIf="est.esEgresado" class="px-3 py-1 text-sm font-medium rounded-full bg-indigo-100 text-indigo-800">Egresado</span>
+      </h1>
+      <p class="text-lg text-gray-500">{{ est.idEstudiante }}</p>
+    </div>
+    <a [routerLink]="['/estudiantes', est.idEstudiante, 'editar']" 
+       class="flex items-center bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold py-2 px-4 rounded-lg shadow transition-all">
+      <span class="mr-2">✏️</span>
+      Editar
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+    
+    <div class="detail-item">
+      <span class="detail-label">Nombre Completo</span>
+      <span class="detail-value">{{ est.nombres }} {{ est.apellidoPaterno }} {{ est.apellidoMaterno }}</span>
+    </div>
+    
+    <div class="detail-item">
+      <span class="detail-label">ID (Matrícula)</span>
+      <span class="detail-value">{{ est.idEstudiante }}</span>
+    </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Carrera (ID)</span>
+      <span class="detail-value">{{ est.carreraID }}</span> </div>
+
+    <div class="detail-item">
+      <span class="detail-label">Semestre</span>
+      <span class="detail-value">{{ est.semestre }}</span>
+    </div>
+
+    <div *ngIf="est.detalleBeca" class="md:col-span-2 detail-item">
+       <span class="detail-label">Detalle Beca</span>
+       <span class="detail-value text-blue-700">{{ est.detalleBeca.porcentaje }}%</span>
+    </div>
+
+    <div *ngIf="est.detalleEgreso" class="md:col-span-2 detail-item">
+       <span class="detail-label">Detalle Egreso</span>
+       <span class="detail-value text-indigo-700">{{ est.detalleEgreso.fechaTitulacion | date:'fullDate' }}</span>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="text-center text-gray-500">Cargando detalle del estudiante...</p>
+</ng-template>

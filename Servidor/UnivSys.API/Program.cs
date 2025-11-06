@@ -4,8 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using UnivSys.API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// --- Configuración de CORS ---
+// Define el nombre de la política CORS para usarla en el middleware.
+const string MyAllowSpecificOrigins = "_myAngularClientOrigins"; 
 
 // --- 1. Configuración de Servicios ---
 
@@ -16,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // B. Inyección de Dependencias
 builder.Services.AddScoped<EstudianteService>(); 
+builder.Services.AddScoped<AuthController>();
 
 // C. Controladores y Swagger
 builder.Services.AddControllers(); 
@@ -39,6 +45,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // E. Configuración de Autorización (Roles)
 builder.Services.AddAuthorization(); 
 
+// F. CONFIGURACIÓN DE CORS (Añadido)
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          // Orígenes permitidos (necesarios para tu app Angular)
+                          policy.WithOrigins("http://localhost:4200",         // Angular Dev Server
+                                             "https://gestion-estudiantes.com", // Dominio de Producción
+                                             "http://localhost:5000")          // Si la API corre en IIS/Kestrel diferente
+                                .AllowAnyHeader()    // Permite cabeceras personalizadas (crucial para el JWT Bearer Token)
+                                .AllowAnyMethod();   // Permite verbos HTTP: GET, POST, PUT, DELETE
+                      });
+});
+
 var app = builder.Build();
 
 // --- 2. Pipeline HTTP ---
@@ -47,6 +68,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseHttpsRedirection();
+
+// IMPORTANTE: El Middleware de CORS debe ir después de UseRouting y antes de UseAuthorization/UseEndpoints
+app.UseCors(MyAllowSpecificOrigins); 
 
 // Importante: Usar Autenticación y Autorización
 app.UseAuthentication(); 

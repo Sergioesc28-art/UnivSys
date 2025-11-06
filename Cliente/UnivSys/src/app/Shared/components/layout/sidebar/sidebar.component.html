@@ -1,0 +1,17 @@
+<aside class="w-60 bg-gray-800 text-white h-[calc(100vh-64px)] fixed pt-4"> <nav>
+    <ul class="flex flex-col space-y-2">
+      <li *ngFor="let item of navItems">
+        <a 
+          [routerLink]="item.link" 
+          routerLinkActive="bg-blue-600 font-bold"
+          [routerLinkActiveOptions]="{exact: item.link === '/estudiantes'}"
+          class="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 transition-colors rounded-r-full"
+        >
+          <span class="mr-3 text-lg">{{ item.icon }}</span>
+          {{ item.label }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
+<div class="w-60 flex-shrink-0"></div>

@@ -1,0 +1,16 @@
+<div *ngIf="estudiante$ | async as estudiante; else loading">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Editar Estudiante</h1>
+    <p class="text-lg text-gray-600 mt-1">Modificando datos de: {{ estudiante.nombres }} {{ estudiante.apellidoPaterno }}</p>
+  </div>
+  
+  <app-estudiante-form 
+    [initialData]="estudiante" 
+    [isEditMode]="true"
+    (save)="onSave($event)">
+  </app-estudiante-form>
+</div>
+
+<ng-template #loading>
+  <p class="text-center text-gray-500">Cargando datos del estudiante...</p>
+</ng-template>
