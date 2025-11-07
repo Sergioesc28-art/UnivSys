@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common'; // Necesario para *ngFor
     RouterLink, 
     RouterLinkActive
   ],
-  templateUrl: './sidebar.component.html'
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
   navItems = [

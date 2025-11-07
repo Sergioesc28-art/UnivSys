@@ -1,11 +1,19 @@
-<aside class="w-60 bg-gray-800 text-white h-[calc(100vh-64px)] fixed pt-4"> <nav>
+<aside class="w-64 bg-slate-900 text-gray-200 h-screen fixed pt-5 shadow-lg z-10">
+  
+  <div class="px-6 mb-8">
+     <h1 class="text-2xl font-bold text-white">Gestión Estudiantes</h1>
+     <span class="text-sm text-indigo-300">Plataforma Académica</span>
+  </div>
+
+  <nav>
     <ul class="flex flex-col space-y-2">
-      <li *ngFor="let item of navItems">
+      <li *ngFor="let item of navItems" class="px-4">
         <a 
           [routerLink]="item.link" 
-          routerLinkActive="bg-blue-600 font-bold"
+          routerLinkActive="bg-indigo-600 font-bold text-white shadow-md"
           [routerLinkActiveOptions]="{exact: item.link === '/estudiantes'}"
-          class="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 transition-colors rounded-r-full"
+          class="nav-link flex items-center px-4 py-3 
+                 text-gray-300 rounded-lg"
         >
           <span class="mr-3 text-lg">{{ item.icon }}</span>
           {{ item.label }}
@@ -14,4 +22,4 @@
     </ul>
   </nav>
 </aside>
-<div class="w-60 flex-shrink-0"></div>
+<div class="w-64 flex-shrink-0"></div>

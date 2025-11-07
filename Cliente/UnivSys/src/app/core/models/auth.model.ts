@@ -1,6 +1,6 @@
 export interface LoginRequestDTO {
-  username: string;
-  password: string;
+  Username: string;
+  Password: string;
 }
 
 export interface LoginResponseDTO {
@@ -10,7 +10,7 @@ export interface LoginResponseDTO {
 }
 
 export interface RegistroRequestDTO {
-  username: string;
-  password: string;
+  Username: string;
+  Password: string;
   idRol: number;
 }

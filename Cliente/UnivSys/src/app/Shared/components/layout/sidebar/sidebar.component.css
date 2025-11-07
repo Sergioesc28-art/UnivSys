@@ -1,0 +1,15 @@
+/* --- src/app/shared/components/layout/sidebar/sidebar.component.css --- */
+
+.nav-link {
+  transition: all 0.25s ease-in-out;
+  transform: translateX(0);
+}
+
+.nav-link:hover {
+  /* Si el link NO está activo, le damos este efecto */
+  &:not(.bg-indigo-600) { 
+    background-color: #1e293b; /* bg-slate-800 */
+    color: white;
+    transform: translateX(5px); /* Pequeño deslizamiento */
+  }
+}

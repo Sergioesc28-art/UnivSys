@@ -78,10 +78,10 @@ namespace UnivSys.API.Controllers
             // 1. Buscar al usuario y su rol
             var usuario = await _context.Usuarios
                 .Include(u => u.Rol) 
-                .FirstOrDefaultAsync(u => u.Username == loginRequest.Username);
+                .FirstOrDefaultAsync(u => u.Username == loginRequest.username);
 
             // 2. Validar Usuario y Contraseña (con BCrypt)
-            if (usuario == null || !BCrypt.Net.BCrypt.Verify(loginRequest.Password, usuario.PasswordHash))
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(loginRequest.password, usuario.PasswordHash))
             {
                 return Unauthorized(new { Mensaje = "Credenciales inválidas." });
             }
@@ -109,7 +109,7 @@ namespace UnivSys.API.Controllers
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _config["Jwt:Key"] ?? "UnaClaveTemporalSeguraDebeEstarAqui"));
+                _config["Jwt:Key"] ?? "SupuestamenteDeboDePonerUnaClaveMasLargaParaQueFuncioneQueFlojeraRodrigoEsGayYArielEsSuNovio"));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -118,8 +118,8 @@ namespace UnivSys.API.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddHours(2),
                 NotBefore = now,
+                Expires = now.AddHours(2),
                 SigningCredentials = creds
             };
 

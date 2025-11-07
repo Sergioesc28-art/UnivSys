@@ -14,7 +14,8 @@ import { factoryFlagValidator } from './factory-flag.validator';
     ReactiveFormsModule,
     RouterLink
   ],
-  templateUrl: './estudiante-form.component.html'
+  templateUrl: './estudiante-form.component.html',
+  styleUrl: './estudiante-form.component.css'
 })
 export class EstudianteFormComponent implements OnInit, OnChanges {
   
@@ -27,6 +28,7 @@ export class EstudianteFormComponent implements OnInit, OnChanges {
     { id: 1, nombre: 'Ing. en Software' },
     { id: 2, nombre: 'Lic. en Nutrición' }
   ];
+  semestres: number[] = Array.from({length: 15}, (_, i) => i + 1);
 
   constructor(private fb: FormBuilder) {}
 
@@ -50,7 +52,7 @@ export class EstudianteFormComponent implements OnInit, OnChanges {
       nombres: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$')]],
       apellidoPaterno: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$')]],
       apellidoMaterno: ['', [Validators.required, Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*$')]],
-      semestre: [1, [Validators.required, Validators.min(1), Validators.max(15)]],
+      semestre: [null, [Validators.required, Validators.min(1), Validators.max(15)]],
       carreraID: [null, [Validators.required]],
       esBecado: [false],
       esEgresado: [false],
@@ -64,6 +66,11 @@ export class EstudianteFormComponent implements OnInit, OnChanges {
       this.estudianteForm.patchValue(this.initialData);
       if(this.isEditMode) {
         this.f['idEstudiante'].disable();
+      }
+      if (this.initialData.fechaEgreso) {
+        const fecha = new Date(this.initialData.fechaEgreso);
+        const formattedDate = fecha.toISOString().substring(0, 10);
+        this.estudianteForm.controls['fechaEgreso'].setValue(formattedDate);
       }
     }
   }

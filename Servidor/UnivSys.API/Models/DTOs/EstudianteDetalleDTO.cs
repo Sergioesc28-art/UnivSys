@@ -5,7 +5,9 @@ namespace UnivSys.API.Models.DTOs
     public class EstudianteDetalleDTO
     {
         public string IDEstudiante { get; set; }
-        public string NombreCompleto { get; set; } 
+        public string Nombre { get; set; } 
+        public string ApellidoPaterno { get; set; } 
+        public string ApellidoMaterno { get; set; } 
         public int Semestre { get; set; }
         
         // Información de Carrera

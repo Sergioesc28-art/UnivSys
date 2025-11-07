@@ -1,0 +1,25 @@
+/* --- src/app/features/estudiantes/pages/estudiante-list/estudiante-list.component.css --- */
+
+@keyframes slideInRow {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.table-row-animate {
+  /* Animación de entrada. 
+    'forwards' la mantiene en el estado final.
+    'ease-out' la hace suave.
+  */
+  animation: slideInRow 0.4s ease-out forwards;
+}
+
+/* Efecto de hover sutil en la fila (CSS tradicional) */
+.table-row-animate:hover {
+  background-color: #f8fafc; /* bg-slate-50 */
+}

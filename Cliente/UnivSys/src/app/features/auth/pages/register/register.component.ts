@@ -15,7 +15,8 @@ import { RegistroRequestDTO } from '../../../../core/models/auth.model';
     ReactiveFormsModule,
     RouterLink // Para el botón de "Ir a Login"
   ],
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
 export class RegisterComponent implements OnInit {
   

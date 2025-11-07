@@ -14,7 +14,8 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     RouterLink
   ],
-  templateUrl: './login.html'
+  templateUrl: './login.html',
+  styleUrls: ['./login.css']
 })
 // Implementamos OnInit para inicializar el formulario si queremos separarlo del constructor
 export class LoginComponent implements OnInit { 
@@ -35,7 +36,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // 2. Inicializar la propiedad *dentro* de un ciclo de vida, donde 'this.fb' ya está disponible.
-    localStorage.clear();
     this.loginForm = this.fb.group({
         username: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required]]
@@ -53,11 +53,11 @@ export class LoginComponent implements OnInit {
     const credentials = this.loginForm.value as any; 
 
     this.authService.login(credentials).subscribe({
-      next: () => {
-        this.notification.showSuccess('Inicio de sesión exitoso');
-        //this.router.navigate(['/estudiantes']);
+      next: (response) => {
+        this.notification.showSuccess('¡Inicio de sesión exitoso!');
+        this.router.navigate(['/estudiantes']);
       },
-      error: (err: any) => { // Aseguramos el tipo 'any' para el error si no tenemos el tipo exacto
+      error: (err: any) => {
         if (err.status !== 401) {
           this.notification.showError('Usuario o contraseña incorrectos.');
         }
@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit {
   }
 
   get f() { 
-    // Usamos 'as any' para evitar errores de tipado al acceder a .controls 
     return this.loginForm.controls as any; 
   }
 }

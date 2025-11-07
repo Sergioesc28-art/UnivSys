@@ -3,7 +3,7 @@ namespace UnivSys.API.Models.DTOs
 {
     public class LoginRequestDTO
     {
-        [Required] public string Username { get; set; }
-        [Required] public string Password { get; set; }
+        [Required] public string username { get; set; }
+        [Required] public string password { get; set; }
     }
 }

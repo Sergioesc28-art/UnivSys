@@ -1,107 +1,131 @@
-<form [formGroup]="estudianteForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-  
-  <div class="md:col-span-2">
-    <label for="idEstudiante" class="form-label">ID Estudiante (Matrícula)</label>
-    <input id="idEstudiante" type="text" formControlName="idEstudiante" 
-           class="form-input" [ngClass]="inputClass('idEstudiante')">
-    <div *ngIf="f['idEstudiante'].touched && f['idEstudiante'].errors?.['required']" class="form-error">
-      El ID es requerido.
-    </div>
-  </div>
+<form [formGroup]="estudianteForm" (ngSubmit)="onSubmit()" class="form-animate space-y-8">
 
-  <div class="md:col-span-2">
-    <label for="nombres" class="form-label">Nombres</label>
-    <input id="nombres" type="text" formControlName="nombres"
-           class="form-input" [ngClass]="inputClass('nombres')">
-    <div *ngIf="f['nombres'].touched && f['nombres'].errors?.['pattern']" class="form-error">
-      No debe contener números ni símbolos.
+  <section class="space-y-4">
+    <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Datos Personales</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <label for="idEstudiante" class="block text-sm font-semibold text-slate-700 mb-1">ID (Matrícula)</label>
+        <input id="idEstudiante" type="text" formControlName="idEstudiante" 
+               class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm transition-colors duration-200
+                      focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50"
+               [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['idEstudiante'].invalid && f['idEstudiante'].touched}">
+        <div *ngIf="f['idEstudiante'].invalid && f['idEstudiante'].touched" class="text-red-600 text-sm mt-1">ID requerido (max 20).</div>
+      </div>
+      <div class="md:col-span-2">
+        <label for="nombres" class="block text-sm font-semibold text-slate-700 mb-1">Nombre(s)</label>
+        <input id="nombres" type="text" formControlName="nombres"
+               class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm transition-colors duration-200
+                      focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50"
+               [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['nombres'].invalid && f['nombres'].touched}">
+        <div *ngIf="f['nombres'].invalid && f['nombres'].touched" class="text-red-600 text-sm mt-1">Solo letras.</div>
+      </div>
     </div>
-  </div>
-  
-  <div>
-    <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
-    <input id="apellidoPaterno" type="text" formControlName="apellidoPaterno"
-           class="form-input" [ngClass]="inputClass('apellidoPaterno')">
-    <div *ngIf="f['apellidoPaterno'].touched && f['apellidoPaterno'].invalid" class="form-error">
-      Requerido (solo letras).
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="apellidoPaterno" class="block text-sm font-semibold text-slate-700 mb-1">Apellido Paterno</label>
+        <input id="apellidoPaterno" type="text" formControlName="apellidoPaterno"
+               class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm transition-colors duration-200
+                      focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50"
+               [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['apellidoPaterno'].invalid && f['apellidoPaterno'].touched}">
+        <div *ngIf="f['apellidoPaterno'].invalid && f['apellidoPaterno'].touched" class="text-red-600 text-sm mt-1">Solo letras.</div>
+      </div>
+      <div>
+        <label for="apellidoMaterno" class="block text-sm font-semibold text-slate-700 mb-1">Apellido Materno</label>
+        <input id="apellidoMaterno" type="text" formControlName="apellidoMaterno"
+               class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm transition-colors duration-200
+                      focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50"
+               [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['apellidoMaterno'].invalid && f['apellidoMaterno'].touched}">
+        <div *ngIf="f['apellidoMaterno'].invalid && f['apellidoMaterno'].touched" class="text-red-600 text-sm mt-1">Solo letras.</div>
+      </div>
     </div>
-  </div>
-  
-  <div>
-    <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
-    <input id="apellidoMaterno" type="text" formControlName="apellidoMaterno"
-           class="form-input" [ngClass]="inputClass('apellidoMaterno')">
-    <div *ngIf="f['apellidoMaterno'].touched && f['apellidoMaterno'].invalid" class="form-error">
-      Requerido (solo letras).
-    </div>
-  </div>
+  </section>
 
-  <div>
-    <label for="carreraID" class="form-label">Carrera</label>
-    <select id="carreraID" formControlName="carreraID"
-            class="form-select" [ngClass]="inputClass('carreraID')">
-      <option [value]="null" disabled>Seleccione una carrera</option>
-      <option *ngFor="let carrera of carreras" [value]="carrera.id">
-        {{ carrera.nombre }}
-      </option>
-    </select>
-    <div *ngIf="f['carreraID'].touched && f['carreraID'].invalid" class="form-error">
-      Carrera requerida.
+  <section class="space-y-4">
+    <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Datos Académicos</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="carreraID" class="block text-sm font-semibold text-slate-700 mb-1">Carrera</label>
+        <select id="carreraID" formControlName="carreraID"
+                class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm transition-colors duration-200
+                       focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50"
+                [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['carreraID'].invalid && f['carreraID'].touched}">
+          <option [value]="null" disabled>Seleccione una carrera</option>
+          <option *ngFor="let carrera of carreras" [value]="carrera.id">{{ carrera.nombre }}</option>
+        </select>
+        <div *ngIf="f['carreraID'].invalid && f['carreraID'].touched" class="text-red-600 text-sm mt-1">Carrera requerida.</div>
+      </div>
+      
+      <div>
+        <label for="semestre" class="block text-sm font-semibold text-slate-700 mb-1">Semestre</label>
+        <select id="semestre" formControlName="semestre"
+                class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm transition-colors duration-200
+                       focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50"
+                [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['semestre'].invalid && f['semestre'].touched}">
+          <option [value]="null" disabled>Seleccione un semestre</option>
+          <option *ngFor="let s of semestres" [value]="s">{{ s }}</option>
+        </select>
+        <div *ngIf="f['semestre'].invalid && f['semestre'].touched" class="text-red-600 text-sm mt-1">Semestre requerido (1-16).</div>
+      </div>
     </div>
-  </div>
-  
-  <div>
-    <label for="semestre" class="form-label">Semestre</label>
-    <input id="semestre" type="number" formControlName="semestre"
-           class="form-input" [ngClass]="inputClass('semestre')">
-    <div *ngIf="f['semestre'].touched && f['semestre'].invalid" class="form-error">
-      Debe estar entre 1 y 15.
+  </section>
+
+  <section class="space-y-4">
+    <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Estatus del Estudiante</h3>
+    
+    <div class="flex items-center space-x-6">
+      <label class="flex items-center space-x-2 cursor-pointer p-2 rounded-lg hover:bg-slate-100 transition-colors">
+        <input type="checkbox" formControlName="esBecado" 
+               class="rounded text-indigo-600 shadow-sm focus:ring-indigo-500 h-4 w-4">
+        <span class="font-medium text-slate-700">¿Es Becado?</span>
+      </label>
+      <label class="flex items-center space-x-2 cursor-pointer p-2 rounded-lg hover:bg-slate-100 transition-colors">
+        <input type="checkbox" formControlName="esEgresado" 
+               class="rounded text-indigo-600 shadow-sm focus:ring-indigo-500 h-4 w-4">
+        <span class="font-medium text-slate-700">¿Es Egresado?</span>
+      </label>
     </div>
-  </div>
-
-  <div class="md:col-span-2 flex items-center space-x-6 pt-4 border-t border-gray-100">
-    <label class="flex items-center space-x-2 cursor-pointer">
-      <input type="checkbox" formControlName="esBecado" class="form-checkbox">
-      <span>¿Es Becado?</span>
-    </label>
-    <label class="flex items-center space-x-2 cursor-pointer">
-      <input type="checkbox" formControlName="esEgresado" class="form-checkbox">
-      <span>¿Es Egresado?</span>
-    </label>
-  </div>
-  
-  <div *ngIf="estudianteForm.errors?.['flagsExclusivas'] && (f['esBecado'].touched || f['esEgresado'].touched)" 
-       class="md:col-span-2 form-error font-bold">
-    ERROR: Un estudiante no puede ser Becado y Egresado al mismo tiempo.
-  </div>
-
-  <div *ngIf="f['esBecado'].value" class="md:col-span-1 border p-4 rounded-lg bg-blue-50">
-    <label for="porcentajeBeca" class="form-label font-bold text-blue-800">Porcentaje Beca *</label>
-    <input id="porcentajeBeca" type="number" formControlName="porcentajeBeca" min="1" max="100"
-           class="form-input" [ngClass]="inputClass('porcentajeBeca')">
-    <div *ngIf="f['porcentajeBeca'].invalid && f['porcentajeBeca'].touched" class="form-error">
-      Requerido, debe ser entre 1 y 100.
+    <div *ngIf="estudianteForm.errors?.['flagsExclusivas'] && (f['esBecado'].touched || f['esEgresado'].touched)" 
+         class="p-3 text-sm text-red-700 bg-red-100 rounded-lg">
+      ERROR: Un estudiante no puede ser Becado y Egresado al mismo tiempo.
     </div>
-  </div>
 
-  <div *ngIf="f['esEgresado'].value" class="md:col-span-1 border p-4 rounded-lg bg-indigo-50">
-    <label for="fechaEgreso" class="form-label font-bold text-indigo-800">Fecha de Egreso *</label>
-    <input id="fechaEgreso" type="date" formControlName="fechaEgreso"
-           class="form-input" [ngClass]="inputClass('fechaEgreso')">
-    <div *ngIf="f['fechaEgreso'].invalid && f['fechaEgreso'].touched" class="form-error">
-      La Fecha de Egreso es requerida.
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div *ngIf="f['esBecado'].value" class="form-conditional-field p-4 rounded-lg bg-blue-50 border border-blue-200">
+        <label for="porcentajeBeca" class="block text-sm font-bold text-blue-800 mb-1">Porcentaje Beca *</label>
+        <input id="porcentajeBeca" type="number" formControlName="porcentajeBeca"
+               class="w-full h-10 px-4 py-2 rounded-lg border-blue-300 bg-white shadow-sm transition-colors duration-200
+                      focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50"
+               [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['porcentajeBeca'].invalid && f['porcentajeBeca'].touched}">
+        <div *ngIf="f['porcentajeBeca'].invalid && f['porcentajeBeca'].touched" class="text-red-600 text-sm mt-1">Req. (1-100).</div>
+      </div>
+      
+      <div *ngIf="f['esEgresado'].value" class="form-conditional-field p-4 rounded-lg bg-teal-50 border border-teal-200">
+        <label for="fechaEgreso" class="block text-sm font-bold text-teal-800 mb-1">Fecha de Egreso *</label>
+        <input id="fechaEgreso" type="date" formControlName="fechaEgreso"
+               class="w-full h-10 px-4 py-2 rounded-lg border-teal-300 bg-white shadow-sm transition-colors duration-200
+                      focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50" 
+               [ngClass]="{'border-red-500 focus:border-red-500 focus:ring-red-200': f['fechaEgreso'].invalid && f['fechaEgreso'].touched}">
+        <div *ngIf="f['fechaEgreso'].invalid && f['fechaEgreso'].touched" class="text-red-600 text-sm mt-1">Fecha requerida.</div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="md:col-span-2 flex justify-end items-center space-x-3 pt-6 border-t border-gray-200 mt-4">
+  <div class="flex justify-end items-center space-x-3 pt-6 border-t border-gray-200 mt-8">
     <button type="button" [routerLink]="['/estudiantes']" 
-            class="py-2 px-4 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold transition-all">
+            class="py-2 px-5 rounded-lg font-semibold 
+                   bg-slate-100 text-slate-700 
+                   hover:bg-slate-200 transition-all duration-300">
       Cancelar
     </button>
     <button type="submit" [disabled]="estudianteForm.invalid"
-            class="py-2 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all shadow
+            class="py-2 px-5 rounded-lg font-semibold shadow-md 
+                   bg-indigo-600 text-white 
+                   hover:bg-indigo-700
+                   transition-all duration-300
                    disabled:bg-gray-400 disabled:cursor-not-allowed">
-      {{ isEditMode ? 'Actualizar' : 'Registrar' }} Estudiante
+      {{ isEditMode ? 'Actualizar Estudiante' : 'Registrar Estudiante' }}
     </button>
   </div>
 </form>

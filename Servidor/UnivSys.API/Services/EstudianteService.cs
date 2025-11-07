@@ -28,7 +28,9 @@ namespace UnivSys.API.Services
             return new EstudianteDetalleDTO
             {
                 IDEstudiante = estudiante.IDEstudiante,
-                NombreCompleto = $"{estudiante.Nombre_s} {estudiante.ApellidoPaterno} {estudiante.ApellidoMaterno}",
+                Nombre = estudiante.Nombre_s,
+                ApellidoPaterno = estudiante.ApellidoPaterno,
+                ApellidoMaterno = estudiante.ApellidoMaterno,
                 Semestre = estudiante.Semestre,
                 CarreraID = estudiante.CarreraID,
                 NombreCarrera = nombreCarrera,

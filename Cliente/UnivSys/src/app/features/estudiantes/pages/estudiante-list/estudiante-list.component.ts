@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EstudianteService } from '../../../estudiantes/services/estudiantes.service';
 import { EstudianteDetalleDTO, EstudianteFiltros } from '../../models/estudiante.model';
-import { Observable, BehaviorSubject, switchMap } from 'rxjs';
+import { Observable, BehaviorSubject, switchMap, tap } from 'rxjs';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { CommonModule } from '@angular/common'; // Para *ngIf, *ngFor, async
 import { RouterLink } from '@angular/router';
@@ -19,7 +19,8 @@ import { AuthService } from '../../../../core/services/auth.service';
     EstudianteFilterComponent, // Standalone
     ConfirmDialogComponent // Standalone
   ],
-  templateUrl: './estudiante-list.component.html'
+  templateUrl: './estudiante-list.component.html',
+  styleUrl: './estudiante-list.component.css'
 })
 export class EstudianteListComponent implements OnInit {
   
@@ -40,8 +41,18 @@ export class EstudianteListComponent implements OnInit {
   ngOnInit(): void {
     this.userRol = this.authService.getRol();
     this.estudiantes$ = this.refresh$.pipe(
-      switchMap(filtros => this.estudianteService.getEstudiantes(filtros))
+      switchMap(filtros => this.estudianteService.getEstudiantes(filtros)),
+      // 2. Añade el 'tap' aquí para interceptar y mostrar la respuesta
+      tap(datosEstudiantes => {
+        console.log('Respuesta de /api/estudiantes:', datosEstudiantes);
+        
+        // (Opcional) Puedes verificar si los nombres vienen aquí
+        if (datosEstudiantes && datosEstudiantes.length > 0) {
+          console.log('Datos del primer estudiante:', datosEstudiantes[0].nombres);
+        }
+      })
     );
+    console.log(this.estudiantes$)
   }
 
   onFilterChange(filtros: EstudianteFiltros): void {
