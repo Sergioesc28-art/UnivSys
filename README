@@ -1,105 +1,12 @@
-# 📚 UnivSys - Sistema Cliente-Servidor de Registro de Estudiantes
+Resumen del Proyecto:
 
-## 🌟 Resumen del Proyecto
+Este repositorio contiene el proyecto UnivSys, un sistema de gestión académica diseñado en una arquitectura Cliente-Servidor. Implementa un CRUD completo para la administración de estudiantes y utiliza el Patrón Factory Method para la creación flexible de diferentes tipos de usuarios.
 
-Este repositorio contiene el proyecto **UnivSys**, un sistema de gestión académica diseñado en una arquitectura **Cliente-Servidor**. Implementa un CRUD completo para la administración de estudiantes y utiliza el **Patrón Factory Method** para la creación flexible de diferentes tipos de usuarios.
+UnivSys - Sistema Cliente-Servidor de Registro de Estudiantes
 
-### 💻 Stack Tecnológico
+NOMBRES:
+1-CHAVEZ MERITO EDSON DANIEL
+2-ESPAÑA LUCIO SERGIO EDUARDO
 
-| Componente | Tecnología | Descripción |
-| :--- | :--- | :--- |
-| **Frontend (Cliente)** | **Angular** | Interfaz web de usuario para el consumo de la API. |
-| **Backend (Servidor)** | **C# .NET** (API Web) | Lógica de negocio y manejo de peticiones (controladores REST). |
-| **Base de Datos** | **SQL Server** | Persistencia y gestión de los datos de los estudiantes. |
-| **Comunicación** | **API RESTful (HTTP/S)** | Protocolo estándar para la interacción entre Angular y .NET. |
+LInk de documentacion en notion: https://www.notion.so/2a211b10e9d180c5bd3acf3c7bc5287a?pvs=4
 
----
-
-## 🚀 Instrucciones de Instalación y Ejecución
-
-Sigue estos pasos para configurar y ejecutar la solución completa (Backend, Base de Datos y Frontend).
-
-### 1. Requisitos Previos
-
-Asegúrate de tener instalado:
-
-* **Visual Studio** (o Visual Studio Code) con la carga de trabajo de .NET.
-* **SQL Server** y **SQL Server Management Studio (SSMS)**.
-* **Node.js y npm** (para Angular).
-* **Angular CLI** (`npm install -g @angular/cli`).
-
-### 2. Configuración de la Base de Datos (SQL Server)
-
-1.  Abre **SSMS** y conéctate a tu instancia de SQL Server.
-2.  Ejecuta el script SQL ubicado en `servidor/UnivSys.API/db_scripts/setup.sql` para crear la base de datos `UnivSysDB` y la tabla `Estudiantes`.
-3.  Asegúrate de que tu usuario de conexión a SQL Server tenga los permisos necesarios.
-
-### 3. Configuración y Ejecución del Backend (C# .NET)
-
-1.  Navega a la carpeta `servidor/UnivSys.API/`.
-2.  Abre la solución `UnivSys.API.sln` en Visual Studio.
-3.  **Configura la Cadena de Conexión:** Edita el archivo `appsettings.json` y actualiza el valor de `ConnectionStrings:DefaultConnection` con los datos de tu instancia de SQL Server.
-
-    ```json
-    "ConnectionStrings": {
-      "DefaultConnection": "Server=TU_SERVIDOR;Database=UnivSysDB;User Id=TU_USUARIO;Password=TU_PASSWORD;"
-    }
-    ```
-4.  Ejecuta el proyecto (`F5` en Visual Studio o `dotnet run` en la terminal). El servidor iniciará, típicamente en `http://localhost:5000` o `http://localhost:5001`.
-
-### 4. Configuración y Ejecución del Frontend (Angular)
-
-1.  Navega a la carpeta `cliente/univsys-app/`.
-2.  Instala las dependencias de Node.js:
-    ```bash
-    npm install
-    ```
-3.  **Configura la URL de la API:** Edita el archivo de entorno (ej: `src/environments/environment.ts`) para apuntar a la URL de tu backend .NET (ej: `apiBaseUrl: 'http://localhost:5000/api'`).
-4.  Inicia la aplicación Angular:
-    ```bash
-    ng serve --open
-    ```
-5.  El cliente se abrirá en tu navegador (típicamente en `http://localhost:4200`).
-
----
-
-## 📝 Documentación del Sistema
-
-### Campos Mínimos de Estudiante
-
-| Columna (SQL) | Tipo de Dato | Descripción |
-| :--- | :--- | :--- |
-| `EstudianteID` | INT (PK) | Identificador único. |
-| `Nombre` | NVARCHAR(100) | Nombre completo del estudiante. |
-| `Carrera` | NVARCHAR(50) | Carrera en la que está inscrito. |
-| `Semestre` | INT | Semestre actual. |
-| `Promedio` | DECIMAL(4,2) | Promedio acumulado. |
-| `TipoUsuario` | NVARCHAR(20) | Usado para el Factory Method (`Regular`, `Becado`, `Egresado`). |
-
-### 🏭 Uso del Patrón Factory Method
-
-El patrón Factory Method se implementa en la capa de negocio del **Backend (.NET)** para abstraer la instanciación de diferentes tipos de objetos `Usuario`.
-
-* **Clase Creadora:** Define un método que retorna un objeto de tipo `IUsuario`.
-* **Productos Concretos:** Clases como `EstudianteRegular`, `EstudianteBecado`, y `EstudianteEgresado`, las cuales heredan de una interfaz común (`IUsuario`).
-
-**Ventaja (Escalabilidad):** Si se añade un nuevo tipo de usuario (ej: `EstudianteIntercambio`), solo se necesita crear la nueva clase de producto y actualizar la clase de la fábrica; la lógica que **utiliza** la instancia de `IUsuario` permanece sin cambios (Principio de Abierto/Cerrado).
-
----
-
-## 📜 Entregables Requeridos
-
-Este repositorio está organizado para cumplir con los siguientes entregables:
-
-1.  **Carpeta `servidor/`**: Contiene el código fuente de la API Web en C# .NET.
-2.  **Carpeta `cliente/`**: Contiene el código fuente de la aplicación Frontend en Angular.
-3.  **Documentación Técnica**: Se adjuntará un documento `DOCUMENTACION_TECNICA.pdf` que incluirá:
-    * Diagramas UML (Clases y Secuencia).
-    * Justificación detallada del uso del Factory Method.
-    * Capturas de la comunicación (ej: peticiones en el Inspector de Red del navegador).
-4.  **Instrucciones de Conexión**: Detalladas en esta sección del README.
-
-## 🤝 Contribuciones y Control de Versiones
-
-* **Autor:** \[Tu Nombre Completo] - \[Tu Matrícula/ID]
-* **Historial de Commits:** Se utilizarán mensajes descriptivos siguiendo el estándar **Conventional Commits** para evidenciar un progreso coherente y progresivo.
