@@ -1,9 +1,17 @@
-<form [formGroup]="filterForm" class="flex items-center gap-6 p-4 bg-gray-50 rounded-lg mb-6 shadow-sm">
+<form [formGroup]="filterForm" 
+      class="flex items-center gap-6 p-5 bg-white rounded-lg shadow-md mb-6">
   
   <div class="flex-1">
-    <label for="carrera" class="block text-sm font-medium text-gray-700 mb-1">Carrera</label>
-    <select id="carrera" formControlName="carreraId" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-      <option value="">Todas</option>
+    <label for="carrera" class="block text-sm font-semibold text-slate-700 mb-1">
+      Filtrar por Carrera
+    </label>
+    <select id="carrera" formControlName="carreraId" 
+            class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm 
+                   focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50 
+                   transition-colors duration-200">
+      
+      <option value="">Todas las Carreras</option>
+      
       <option *ngFor="let carrera of carreras" [value]="carrera.id">
         {{ carrera.nombre }}
       </option>
@@ -11,8 +19,13 @@
   </div>
 
   <div class="flex-1">
-    <label for="semestre" class="block text-sm font-medium text-gray-700 mb-1">Semestre</label>
-    <input id="semestre" type="number" min="1" max="15" formControlName="semestre" placeholder="Todos"
-           class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+    <label for="semestre" class="block text-sm font-semibold text-slate-700 mb-1">
+      Filtrar por Semestre
+    </label>
+    <input id="semestre" type="number" min="1" max="16" formControlName="semestre" 
+           placeholder="Todos los semestres"
+           class="w-full h-10 px-4 py-2 rounded-lg border-slate-300 bg-white shadow-sm 
+                  focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50 
+                  transition-colors duration-200">
   </div>
 </form>

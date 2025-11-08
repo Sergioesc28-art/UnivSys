@@ -1,60 +1,132 @@
-<div *ngIf="estudiante$ | async as est; else loading" class="detail-container">
+<div *ngIf="estudiante$ | async as est; else loading" class="detail-container space-y-8">
   
-  <div class="flex justify-between items-start mb-6 pb-4 border-b border-gray-200">
+  <section class="flex justify-between items-start pb-4 border-b border-slate-200">
     <div>
       <h1 class="text-4xl font-bold text-slate-800 flex items-center gap-4">
         {{ est.nombres }} {{ est.apellidoPaterno }} {{ est.apellidoMaterno }}
-        <span *ngIf="est.esBecado" class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">Becado</span>
-        <span *ngIf="est.esEgresado" class="px-3 py-1 text-sm font-semibold rounded-full bg-teal-100 text-teal-800">Egresado</span>
+        
+        <span [ngSwitch]="est.tipoEstudiante">
+          <span *ngSwitchCase="'Becado'" 
+                class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">
+            Becado
+          </span>
+          <span *ngSwitchCase="'Egresado'" 
+                class="px-3 py-1 text-sm font-semibold rounded-full bg-teal-100 text-teal-800">
+            Egresado
+          </span>
+        </span>
       </h1>
-      <p class="text-xl text-indigo-600 font-medium">{{ est.idEstudiante }}</p>
+      <p class="text-xl text-indigo-600 font-medium mt-1">{{ est.idEstudiante }}</p>
     </div>
     <a [routerLink]="['/estudiantes', est.idEstudiante, 'editar']" 
-       class="flex items-center py-2 px-4 rounded-lg font-semibold text-white shadow-md
+       class="flex items-center py-2 px-5 rounded-lg font-semibold text-white shadow-md
               bg-indigo-600 hover:bg-indigo-700
               transition-all duration-300 ease-in-out
               transform hover:scale-105">
       <span class="mr-2">✏️</span>
       Editar
     </a>
-  </div>
+  </section>
 
-  <div class_ ="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
     
     <div class="md:col-span-2 space-y-6">
-      <div class="detail-item">
-        <span class="detail-label">Nombre Completo: </span>
-        <span class="detail-value">{{ est.nombres }} {{ est.apellidoPaterno }} {{ est.apellidoMaterno }}</span>
-      </div>
-      <div class="detail-item">
-        <span class="detail-label">Carrera: </span>
-        <span class="detail-value">{{ est.nombreCarrera }}</span> </div>
-      <div class="detail-item">
-        <span class="detail-label">Semestre Actual: </span>
-        <span class="detail-value">{{ est.semestre }}</span>
-      </div>
-    </div>
-    
-    <div class="md:col-span-1 space-y-6 bg-slate-50 p-6 rounded-lg">
-      <h4 class="text-lg font-semibold text-slate-700 border-b pb-2">Estatus Detallado</h4>
-
-      <div *ngIf="est.esBecado" class="detail-item">
-         <span class="detail-label text-blue-700">Detalle Beca</span>
-         <span class="detail-value text-blue-900">{{ est.porcentajeBeca || est.detalleBeca?.porcentaje }}%</span>
-      </div>
-
-      <div *ngIf="est.esEgresado" class="detail-item">
-         <span class="detail-label text-teal-700">Detalle Egreso</span>
-         <span class="detail-value text-teal-900">{{ (est.fechaEgreso || est.detalleEgreso?.fechaTitulacion) | date:'fullDate' }}</span>
-      </div>
-
-      <div *ngIf="!est.esBecado && !est.esEgresado" class="detail-item">
-         <span class="detail-label">Estatus: </span>
-         <span class="detail-value text-slate-600">Estudiante Regular</span>
+      <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Datos del Estudiante</h3>
+      
+      <div class="grid grid-cols-2 gap-6">
+        <div class="detail-item">
+          <span class="detail-label">Carrera: </span>
+          <span class="detail-value">{{ est.nombreCarrera }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Semestre Actual: </span>
+          <span class="detail-value">
+            {{ est.semestre === 0 ? 'Egresado' : est.semestre }}
+          </span>
+        </div>
       </div>
     </div>
     
-  </div>
+    <div class="md:col-span-1 space-y-4 bg-slate-50 p-6 rounded-lg shadow-sm">
+      <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Estatus Detallado</h3>
+
+      <div class="detail-item">
+        <span class="detail-label">Promedio General: </span>
+        <span class="detail-value text-indigo-600">{{ est.promedio | number:'1.1-2' }}</span>
+      </div>
+
+      <div [ngSwitch]="est.tipoEstudiante" class="space-y-4">
+        
+        <div *ngSwitchCase="'Regular'" class="detail-item">
+           <span class="detail-label">Estatus</span>
+           <span class="detail-value text-slate-600">
+             <span class="px-3 py-1 text-sm font-semibold rounded-full bg-slate-200 text-slate-800">Regular</span>
+           </span>
+        </div>
+        
+        <div *ngSwitchCase="'Becado'" class="space-y-4">
+          <div class="detail-item">
+             <span class="detail-label text-blue-700">Estatus</span>
+             <span class="detail-value text-blue-900">
+               <span class="px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">Becado</span>
+             </span>
+          </div>
+          <div class="detail-item">
+             <span class="detail-label text-blue-700">Porcentaje Beca</span>
+             <span class="detail-value text-blue-900">{{ est.porcentajeBeca || 'N/A' }}%</span>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'Egresado'" class="space-y-4">
+          <div class="detail-item">
+             <span class="detail-label text-teal-700">Estatus</span>
+             <span class="detail-value text-teal-900">
+               <span class="px-3 py-1 text-sm font-semibold rounded-full bg-teal-100 text-teal-800">Egresado</span>
+             </span>
+          </div>
+          <div *ngIf="est.fechaEgreso" class="detail-item">
+             <span class="detail-label text-teal-700">Fecha de Egreso</span>
+             <span class="detail-value text-teal-900">{{ est.fechaEgreso | date:'longDate' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="space-y-4">
+    <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Historial Académico</h3>
+    
+    <div *ngIf="est.historialAcademico && est.historialAcademico.length > 0; else noHistorial" 
+         class="bg-white shadow-lg rounded-lg overflow-hidden">
+      
+      <table class="w-full text-left">
+        <thead class="bg-slate-100 text-slate-600 uppercase text-xs font-semibold">
+          <tr>
+            <th scope="col" class="px-6 py-4">Materia</th>
+            <th scope="col" class="px-6 py-4">Periodo</th>
+            <th scope="col" class="px-6 py-4 text-right">Calificación</th>
+          </tr>
+        </thead>
+        <tbody class="text-slate-700 divide-y divide-slate-200">
+          <tr *ngFor="let item of est.historialAcademico" class="table-row-animate">
+            <td class="px-6 py-4 font-medium text-slate-900">{{ item.materia }}</td>
+            <td class="px-6 py-4">{{ item.periodo }}</td>
+            <td class="px-6 py-4 text-right font-bold text-lg"
+                [ngClass]="item.calificacion >= 70 ? 'text-green-600' : 'text-red-600'">
+              {{ item.calificacion }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <ng-template #noHistorial>
+      <div class="p-6 text-center text-slate-500 bg-slate-50 rounded-lg">
+        <p>Este estudiante aún no tiene un historial académico registrado.</p>
+      </div>
+    </ng-template>
+  </section>
+
 </div>
 
 <ng-template #loading>

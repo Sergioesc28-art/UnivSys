@@ -25,8 +25,16 @@ export class EstudianteFormComponent implements OnInit, OnChanges {
   
   estudianteForm!: FormGroup;
   carreras = [
-    { id: 1, nombre: 'Ing. en Software' },
-    { id: 2, nombre: 'Lic. en Nutrición' }
+    { id: 1, nombre: 'Ingeniería de Software' },
+    { id: 2, nombre: 'Medicina' },
+    { id: 3, nombre: 'Derecho' },
+    { id: 4, nombre: 'Administración de Empresas' },
+    { id: 5, nombre: 'Arquitectura' },
+    { id: 6, nombre: 'Psicología' },
+    { id: 7, nombre: 'Marketing Digital' },
+    { id: 8, nombre: 'Contaduría Pública' },
+    { id: 9, nombre: 'Diseño Gráfico' },
+    { id: 10, nombre: 'Relaciones Internacionales' }
   ];
   semestres: number[] = Array.from({length: 15}, (_, i) => i + 1);
 

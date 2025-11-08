@@ -2,6 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UnivSys.API.Models.DTOs
 {
+    public class CalificacionDTO
+    {
+        public int IDRegistro { get; set; } // El ID de la calificación
+        public string Materia { get; set; }
+        public decimal Calificacion { get; set; }
+        public string Periodo { get; set; }
+    }
     public class EstudianteDetalleDTO
     {
         public string IDEstudiante { get; set; }
@@ -23,5 +30,6 @@ namespace UnivSys.API.Models.DTOs
         
         // Podríamos agregar el Promedio aquí en una fase posterior.
         public decimal? Promedio { get; set; }
+        public List<CalificacionDTO> HistorialAcademico { get; set; } = new List<CalificacionDTO>();
     }
 }

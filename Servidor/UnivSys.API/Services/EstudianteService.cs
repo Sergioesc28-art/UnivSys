@@ -25,6 +25,23 @@ namespace UnivSys.API.Services
             if (estudiante.EsBecado) tipo = "Becado";
             else if (estudiante.EsEgresado) tipo = "Egresado";
 
+            // --- (NUEVO) Mapeo del historial del Modelo de BD al DTO ---
+            var historialDTO = estudiante.Historial
+                .Select(h => new CalificacionDTO
+                {
+                    IDRegistro = h.IDRegistro,
+                    Materia = h.Materia,
+                    Calificacion = h.Calificacion,
+                    Periodo = h.Periodo
+                }).ToList();
+
+            // (Opcional) Cálculo del promedio
+            decimal? promedioCalculado = null;
+            if (historialDTO.Any())
+            {
+                promedioCalculado = historialDTO.Average(h => h.Calificacion);
+            }
+
             return new EstudianteDetalleDTO
             {
                 IDEstudiante = estudiante.IDEstudiante,
@@ -36,7 +53,9 @@ namespace UnivSys.API.Services
                 NombreCarrera = nombreCarrera,
                 TipoEstudiante = tipo,
                 PorcentajeBeca = estudiante.DetalleBecado?.PorcentajeBeca,
-                FechaEgreso = estudiante.DetalleEgresado?.FechaEgreso
+                FechaEgreso = estudiante.DetalleEgresado?.FechaEgreso,
+                Promedio = promedioCalculado,
+                HistorialAcademico = historialDTO
             };
         }
 
@@ -123,6 +142,7 @@ namespace UnivSys.API.Services
                 .Include(e => e.Carrera)
                 .Include(e => e.DetalleBecado)
                 .Include(e => e.DetalleEgresado)
+                .Include(e => e.Historial)
                 .FirstOrDefaultAsync(e => e.IDEstudiante == idEstudiante);
 
             if (estudiante == null)

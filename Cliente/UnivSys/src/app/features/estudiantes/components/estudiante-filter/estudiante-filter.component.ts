@@ -6,33 +6,42 @@ import { EstudianteFiltros } from '../../models/estudiante.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-  selector: 'app-estudiante-filter',
-  standalone: true,
-  imports: [
-    CommonModule, 
-    ReactiveFormsModule
-  ],
-  templateUrl: './estudiante-filter.component.html'
+  selector: 'app-estudiante-filter',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule
+  ],
+  templateUrl: './estudiante-filter.component.html',
+  styleUrls: ['./estudiante-filter.component.css']
 })
 // Implementar OnInit no es estrictamente necesario si se hace todo en el constructor, 
 // pero ayuda a estructurar.
 export class EstudianteFilterComponent implements OnInit { 
-  @Output() filterChange = new EventEmitter<EstudianteFiltros>();
+  @Output() filterChange = new EventEmitter<EstudianteFiltros>();
 
-  carreras = [
-    { id: 1, nombre: 'Ing. en Software' },
-    { id: 2, nombre: 'Lic. en Nutrición' }
-  ];
+carreras = [
+    { id: 1, nombre: 'Ingeniería de Software' },
+    { id: 2, nombre: 'Medicina' },
+    { id: 3, nombre: 'Derecho' },
+    { id: 4, nombre: 'Administración de Empresas' },
+    { id: 5, nombre: 'Arquitectura' },
+    { id: 6, nombre: 'Psicología' },
+    { id: 7, nombre: 'Marketing Digital' },
+    { id: 8, nombre: 'Contaduría Pública' },
+    { id: 9, nombre: 'Diseño Gráfico' },
+    { id: 10, nombre: 'Relaciones Internacionales' }
+  ];
 
-  // 1. Declarar la propiedad sin inicializarla de inmediato
-  filterForm!: FormGroup; 
+// 1. Declarar la propiedad sin inicializarla de inmediato
+  filterForm!: FormGroup; 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
     // 2. Inicializar el formulario DENTRO del constructor
     this.filterForm = this.fb.group({
-        carreraId: [''],
-        semestre: ['']
-    });
+        carreraId: [''],
+        semestre: ['']
+   });
 
     // 3. Suscribirse a los cambios, usando el formulario ya inicializado
     this.filterForm.valueChanges.pipe(

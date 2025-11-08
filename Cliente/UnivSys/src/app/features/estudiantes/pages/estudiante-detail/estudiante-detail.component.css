@@ -1,6 +1,6 @@
 /* --- src/app/features/estudiantes/pages/estudiante-detail/estudiante-detail.component.css --- */
 
-/* Animación de entrada */
+/* Animación de entrada para todo el contenedor */
 @keyframes fadeInUp {
   from { 
     opacity: 0; 
@@ -16,7 +16,26 @@
   animation: fadeInUp 0.5s ease-out forwards;
 }
 
-/* Estilos de los items de detalle (si no quieres usar @apply en styles.css) */
+/* Animación de entrada para las filas de la nueva tabla de historial */
+@keyframes slideInRow {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.table-row-animate {
+  animation: slideInRow 0.4s ease-out forwards;
+}
+
+/* Estilos de las etiquetas de detalle. 
+  (Usamos @apply aquí, ya que está en un archivo CSS de componente específico
+  y no en styles.css, siguiendo tus reglas).
+*/
 .detail-item {
   @apply flex flex-col;
 }

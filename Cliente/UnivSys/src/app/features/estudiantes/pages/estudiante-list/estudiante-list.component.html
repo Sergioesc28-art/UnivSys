@@ -12,7 +12,9 @@
   </a>
 </div>
 
-<app-estudiante-filter></app-estudiante-filter>
+<app-estudiante-filter 
+  (filterChange)="onFilterChange($event)">
+</app-estudiante-filter>
 
 <div class="bg-white shadow-lg rounded-lg overflow-hidden">
   <div *ngIf="estudiantes$ | async as estudiantes; else loading">
